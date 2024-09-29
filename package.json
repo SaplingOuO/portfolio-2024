@@ -5,11 +5,13 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "sh deploy.sh"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
     "core-js": "^3.8.3",
+    "gh-pages": "^6.1.1",
     "popper.js": "^1.16.1",
     "sass": "^1.79.3",
     "three": "^0.169.0",
