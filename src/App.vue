@@ -1,5 +1,7 @@
 <!-- 使用Bootstrap 5 examples 中的 Cover 範例修改 -->
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'FloatingWindow',
   data() {
@@ -39,10 +41,6 @@ export default {
               to:'/Components/HomeViewSlide',
             },
             {
-              name: 'ThreeCube',
-              to:'/Components/ThreeJS/ThreeCube',
-            },
-            {
               name: 'ThreeExample',
               to:'/Components/ThreeJS/ThreeExample',
             },
@@ -53,31 +51,38 @@ export default {
           ],
         },
         {
-          // name: 'Project',
-          // unit:[
-          //   {
-          //     name: 'animatedText',
-          //     to:'/Project/HomeViewSlide',
-          //   },
-          //   {
-          //     name: 'BackgroundColorChange',
-          //     to:'/Project/HomeViewSlide',
-          //   },
-          //   {
-          //     name: 'HomeViewSlide',
-          //     to:'/Project/HomeViewSlide',
-          //   },
-          // ],
+          name: 'Project',
+          unit:[
+            // {
+            //   name: 'AnimeList',
+            //   to:'/Project/AnimeList',
+            // },
+            // {
+            //   name: 'InProduction',
+            //   to:'/Project/InProduction',
+            // },
+            // {
+            //   name: 'PokemonTypeFighting',
+            //   to:'/Project/PokemonTypeFighting',
+            // },
+            // {
+            //   name: 'ShopDemo',
+            //   to:'/Project/ShopDemo',
+            // },
+          ],
         },
       ],
-      openCase: 0,
       targetCase: 0,
     };
   },
   computed: {
     currentItem() {
       return this.items[this.currentIndex];
-    }
+    },
+    // vuex控制openCase的值，使用changeCase(value)方法控制
+    ...mapState({
+      openCase: state => state.openCase
+    }),
   },
   mounted() {
     window.addEventListener('wheel', this.handleScroll);
@@ -112,7 +117,7 @@ export default {
       const index = this.items.findIndex(item => item.id === parseInt(hash));
       if (index !== -1) {
         this.currentIndex = index;
-        this.openCase = 0;
+        this.changeCase(0);
       }
     },
     onSlideChange(temp) {
@@ -133,9 +138,12 @@ export default {
     // ↑↑↑Nav相關↑↑↑
 
     // ↓↓↓Menu選擇↓↓↓
-    changeCase(){
-      this.openCase = this.lists[this.currentIndex].unit[this.targetCase];
-      console.log(this.openCase);
+    changeCase(value){
+      this.$store.commit('setOpenCase', value)
+      // this.openCase = 1
+      // console.log('openCase='+this.openCase)
+      // console.log('value = ' + value)
+      // console.log('openCase = ' + this.openCase)
     },
     // ↑↑↑Menu選擇↑↑↑
 

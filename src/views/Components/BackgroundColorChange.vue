@@ -52,17 +52,17 @@ export default {
                 </div>
                 <div :class="{'d-none':customRange}">
                     <div class="R_customRange">
-                        <label for="R_customRange" class="form-label">Red</label>
+                        <label for="R_customRange" class="form-label m-0 p-2">Red</label>
                         <div class="btn btn-dark  disabled float-end">{{ R_rangeValue }}</div>
                         <input v-model="R_rangeValue" type="range" class="form-range" min="0" max="255" id="R_customRange" @input="updateColorArray(currentIndex)">
                     </div>
                     <div class="G_customRange">
-                        <label for="G_customRange" class="form-label">Green</label>
+                        <label for="G_customRange" class="form-label m-0 p-2">Green</label>
                         <div class="btn btn-dark  disabled float-end">{{ G_rangeValue }}</div>
                         <input v-model="G_rangeValue" type="range" class="form-range" min="0" max="255" id="G_customRange" @input="updateColorArray(currentIndex)">
                     </div>
                     <div class="B_customRange">
-                        <label for="B_customRange" class="form-label">Blue</label>
+                        <label for="B_customRange" class="form-label m-0 p-2">Blue</label>
                         <div class="btn btn-dark  disabled float-end">{{ B_rangeValue }}</div>
                         <input v-model="B_rangeValue" type="range" class="form-range" min="0" max="255" id="B_customRange" @input="updateColorArray(currentIndex)">
                     </div>

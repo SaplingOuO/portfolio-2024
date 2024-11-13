@@ -2,7 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
     {
-        path: '/',
+      path: '/',  // 根路徑重定向到 /home
+      redirect: '/Home'
+    },
+    {
+        path: '/Home',
         name: 'Home',
         component: () => import('../App.vue')
     },
@@ -35,11 +39,6 @@ const routes = [
                 component: () => import('../views/Components/HomeViewSlide.vue')
             },
             {
-                path: '/Components/ThreeJS/ThreeCube',
-                name: 'ThreeCube',
-                component: () => import('../views/Components/ThreeJS/ThreeCube.vue')
-            },
-            {
                 path: '/Components/ThreeJS/ThreeExample',
                 name: 'ThreeExample',
                 component: () => import('../views/Components/ThreeJS/ThreeExample.vue')
@@ -55,9 +54,24 @@ const routes = [
         path: '/Project',
         children:[
             // {
-            //     path: '/Project/AnimatedText',
-            //     name: 'AnimatedText',
-            //     component: () => import('../views/Project/animatedText.vue')
+            //     path: '/Project/AnimeList',
+            //     name: 'AnimeList',
+            //     component: () => import('../views/Project/AnimeList.vue')
+            // },
+            // {
+            //     path: '/Project/InProduction',
+            //     name: 'InProduction',
+            //     component: () => import('../views/Project/InProduction.vue')
+            // },
+            // {
+            //     path: '/Project/PokemonTypeFighting',
+            //     name: 'PokemonTypeFighting',
+            //     component: () => import('../views/Project/PokemonTypeFighting.vue')
+            // },
+            // {
+            //     path: '/Project/ShopDemo',
+            //     name: 'ShopDemo',
+            //     component: () => import('../views/Project/ShopDemo.vue')
             // },
         ],
     },
@@ -69,5 +83,6 @@ const router = createRouter({
     base: process.env.BASE_URL,
     routes
 });
+
 
 export default router;
