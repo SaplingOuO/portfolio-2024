@@ -53,10 +53,10 @@ export default {
         {
           name: 'Project',
           unit:[
-            // {
-            //   name: 'AnimeList',
-            //   to:'/Project/AnimeList',
-            // },
+            {
+              name: 'AnimeList',
+              to:'https://saplingouo.github.io/AnimeRecord/',
+            },
             // {
             //   name: 'InProduction',
             //   to:'/Project/InProduction',
@@ -198,7 +198,12 @@ export default {
                   <div class="position-absolute bottom-0 start-0 w-100 badge bg-dark" style="--bs-bg-opacity: 0.4">
                     <h5 class="title text-truncate">{{ item.name }}</h5>
                   </div>
-                  <router-link :to="lists[this.currentIndex].unit[this.targetCase].to" class="stretched-link"></router-link>
+                  <div v-if="lists[currentIndex] && lists[currentIndex].unit && lists[currentIndex].unit[targetCase] && !lists[currentIndex].unit[targetCase].to.startsWith('http')">
+                    <router-link :to="lists[currentIndex].unit[targetCase].to" class="stretched-link"></router-link>
+                  </div>
+                  <div v-else-if="lists[currentIndex] && lists[currentIndex].unit && lists[currentIndex].unit[targetCase]">
+                    <a :href="lists[currentIndex].unit[targetCase].to" class="stretched-link"></a>
+                  </div>
                 </div>
               </slide>
             </carousel-3d>
