@@ -8,9 +8,9 @@ export default {
     return {
       items: [
         { id: 0, color: [232, 122, 144], title: "首頁", description: "歡迎來到首頁" },
-        { id: 1, color: [236, 184, 138], title: "切版練習", description: "了解更多關於我們的資訊" },
-        { id: 2, color: [181, 202, 160], title: "小元件練習", description: "查看我們提供的服務" },
-        { id: 3, color: [46, 169, 223], title: "專案練習", description: "保持聯繫" }
+        { id: 1, color: [236, 184, 138], title: "切版與樣式練習", description: "CSS練習" },
+        { id: 2, color: [181, 202, 160], title: "元件練習", description: "單一套件練習" },
+        { id: 3, color: [46, 169, 223], title: "專案練習", description: "綜合元件與切版的專案練習" }
       ],
       currentIndex: 0,
       carouselVisible: true,
@@ -61,18 +61,19 @@ export default {
             //   name: 'InProduction',
             //   to:'/Project/InProduction',
             // },
-            // {
-            //   name: 'PokemonTypeFighting',
-            //   to:'/Project/PokemonTypeFighting',
-            // },
-            // {
-            //   name: 'ShopDemo',
-            //   to:'/Project/ShopDemo',
-            // },
+            {
+              name: 'PokemonTypeFighting',
+              to:'/Project/PokemonTypeFighting',
+            },
+            {
+              name: 'ShopDemo',
+              to:'/Project/ShopDemo',
+            },
           ],
         },
       ],
       targetCase: 0,
+      carouselIndex: 0,
     };
   },
   computed: {
@@ -92,6 +93,10 @@ export default {
   methods: {
     // ↓↓↓Nav相關↓↓↓
     handleScroll(event) {
+      // 如果 openCase 不為 0，表示進入了 RouterView，則不進行滾輪切換
+      if (this.openCase !== 0) {
+        return;
+      }
       if (event.deltaY > 0) {
         if (this.currentIndex < this.items.length - 1) {
           this.currentIndex++;
@@ -107,6 +112,23 @@ export default {
         }
         this.updateHash();
       }
+    },
+    handleCarouselScroll(event) {
+      const carousel = this.$refs.carousel;
+      if (!carousel) return;
+
+      if (event.deltaY > 0) {
+      const nextIndex = (carousel.currentIndex + 1) % this.lists[this.currentIndex].unit.length;
+      carousel.goFar(nextIndex, true); // 切換到下一張
+      this.updateHash();
+      } else {
+        const prevIndex =
+          (carousel.currentIndex - 1 + this.lists[this.currentIndex].unit.length) %
+          this.lists[this.currentIndex].unit.length;
+        carousel.goFar(prevIndex, true); // 切換到上一張
+        this.updateHash();
+      }
+      carousel.goFar(this.carouselIndex, true); // 切換幻燈片
     },
     updateHash() {
       window.history.pushState({}, '', '/');
@@ -147,6 +169,18 @@ export default {
     },
     // ↑↑↑Menu選擇↑↑↑
 
+    // ↓↓↓進入carousel-3d的範圍↓↓↓
+    handleMouseEnter() {
+      console.log("已在範圍內");
+      window.removeEventListener('wheel', this.handleScroll);
+      window.addEventListener('wheel', this.handleCarouselScroll);
+    },
+    handleMouseLeave() {
+      console.log("已離開範圍");
+      window.addEventListener('wheel', this.handleScroll);
+      window.removeEventListener('wheel', this.handleCarouselScroll);
+    },
+    // ↑↑↑進入carousel-3d的範圍↑↑↑
   },
   beforeUnmount() {
     window.removeEventListener('wheel', this.handleScroll);
@@ -180,7 +214,8 @@ export default {
           </div>
 
           <div v-if="currentItem.id!=0">
-            <carousel-3d ref="carousel"  
+            <carousel-3d 
+              ref="carousel"  
               @before-slide-change="onSlideChange"
               :onMainSlideClick="changeCase" 
               :display="5"
@@ -188,7 +223,10 @@ export default {
               :minSwipeDistance="3"
               :width="300" 
               :height="300" 
-              :controlsVisible="true">
+              :controlsVisible="true"
+              @mouseenter="handleMouseEnter"
+              @mouseleave="handleMouseLeave"
+            >
               <slide class="border-0 rounded" v-for="(item, i) in lists[this.currentIndex].unit" :index="i" :key="i">
                 <div class="card">
                   <div class="img-fluid" style="height: 300px;">
@@ -219,6 +257,9 @@ export default {
 </template>
 
 <style>
+html{
+  background-color: red;
+}
 /* ↓↓↓Header↓↓↓ */
 .nav-masthead .nav-link {
   padding: .25rem 0;

@@ -63,16 +63,16 @@ const routes = [
             //     name: 'InProduction',
             //     component: () => import('../views/Project/InProduction.vue')
             // },
-            // {
-            //     path: '/Project/PokemonTypeFighting',
-            //     name: 'PokemonTypeFighting',
-            //     component: () => import('../views/Project/PokemonTypeFighting.vue')
-            // },
-            // {
-            //     path: '/Project/ShopDemo',
-            //     name: 'ShopDemo',
-            //     component: () => import('../views/Project/ShopDemo.vue')
-            // },
+            {
+                path: '/Project/PokemonTypeFighting',
+                name: 'PokemonTypeFighting',
+                component: () => import('../views/Project/PokemonTypeFighting.vue')
+            },
+            {
+                path: '/Project/ShopDemo',
+                name: 'ShopDemo',
+                component: () => import('../views/Project/ShopDemo.vue')
+            },
         ],
     },
 
