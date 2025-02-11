@@ -13,11 +13,11 @@ const routes = [
     {
         path: '/Layout',
         children:[
-            // {
-            //     path: '/Layout/AnimatedText',
-            //     name: 'AnimatedText',
-            //     component: () => import('../views/Layout/animatedText.vue')
-            // },
+            {
+                path: '/Layout/HtmlTag',
+                name: 'HtmlTag',
+                component: () => import('../views/Layout/HtmlTag.vue')
+            },
         ],
     },
     {

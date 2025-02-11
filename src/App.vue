@@ -17,13 +17,13 @@ export default {
       lists: [
         {},
         {
-          // name: 'Layout',
-          // unit:[
-          //   {
-          //     name: 'animatedText',
-          //     to: '/Layout/animatedText'
-          //   },
-          // ],
+          name: 'Layout',
+          unit:[
+            {
+              name: 'HTML標籤',
+              to: '/Layout/HtmlTag'
+            },
+          ],
         },
         {
           name: 'Components',
@@ -54,6 +54,10 @@ export default {
           name: 'Project',
           unit:[
             {
+              name: 'ShopDemo',
+              to:'/Project/ShopDemo',
+            },
+            {
               name: 'AnimeList',
               to:'https://saplingouo.github.io/AnimeRecord/',
             },
@@ -64,10 +68,6 @@ export default {
             {
               name: 'PokemonTypeFighting',
               to:'/Project/PokemonTypeFighting',
-            },
-            {
-              name: 'ShopDemo',
-              to:'/Project/ShopDemo',
             },
           ],
         },
@@ -114,13 +114,14 @@ export default {
       }
     },
     handleCarouselScroll(event) {
+
       const carousel = this.$refs.carousel;
       if (!carousel) return;
 
       if (event.deltaY > 0) {
-      const nextIndex = (carousel.currentIndex + 1) % this.lists[this.currentIndex].unit.length;
-      carousel.goFar(nextIndex, true); // 切換到下一張
-      this.updateHash();
+        const nextIndex = (carousel.currentIndex + 1) % this.lists[this.currentIndex].unit.length;
+        carousel.goFar(nextIndex, true); // 切換到下一張
+        this.updateHash();
       } else {
         const prevIndex =
           (carousel.currentIndex - 1 + this.lists[this.currentIndex].unit.length) %
@@ -145,6 +146,12 @@ export default {
     onSlideChange(temp) {
       this.carouselIndex = temp;
       this.targetCase = temp;
+      // 自動導航至目標頁面
+      const targetUnit = this.lists[this.currentIndex]?.unit?.[temp];
+
+      if (targetUnit && !targetUnit.to.startsWith('http')) {
+        this.$router.push(targetUnit.to);
+      }
     },
     goSlideIndex(index) {
       if (index > this.lists.length - 1 || 0 > this.lists.length - 1) {
@@ -162,6 +169,16 @@ export default {
     // ↓↓↓Menu選擇↓↓↓
     changeCase(value){
       this.$store.commit('setOpenCase', value)
+      const targetUnit = this.lists[this.currentIndex]?.unit?.[value];
+      if (targetUnit) {
+        if (targetUnit.to.startsWith('http')) {
+          // 外部鏈接
+          window.open(targetUnit.to, '_blank');
+        } else {
+          // 使用 Vue Router 導航
+          this.$router.push(targetUnit.to);
+        }
+      }
       // this.openCase = 1
       // console.log('openCase='+this.openCase)
       // console.log('value = ' + value)
@@ -171,12 +188,12 @@ export default {
 
     // ↓↓↓進入carousel-3d的範圍↓↓↓
     handleMouseEnter() {
-      console.log("已在範圍內");
+      // console.log("已在範圍內");
       window.removeEventListener('wheel', this.handleScroll);
       window.addEventListener('wheel', this.handleCarouselScroll);
     },
     handleMouseLeave() {
-      console.log("已離開範圍");
+      // console.log("已離開範圍");
       window.addEventListener('wheel', this.handleScroll);
       window.removeEventListener('wheel', this.handleCarouselScroll);
     },
@@ -236,12 +253,18 @@ export default {
                   <div class="position-absolute bottom-0 start-0 w-100 badge bg-dark" style="--bs-bg-opacity: 0.4">
                     <h5 class="title text-truncate">{{ item.name }}</h5>
                   </div>
-                  <div v-if="lists[currentIndex] && lists[currentIndex].unit && lists[currentIndex].unit[targetCase] && !lists[currentIndex].unit[targetCase].to.startsWith('http')">
+                  <!-- <div v-if="lists[currentIndex] && lists[currentIndex].unit && lists[currentIndex].unit[targetCase] && !lists[currentIndex].unit[targetCase].to.startsWith('http')">
                     <router-link :to="lists[currentIndex].unit[targetCase].to" class="stretched-link"></router-link>
                   </div>
                   <div v-else-if="lists[currentIndex] && lists[currentIndex].unit && lists[currentIndex].unit[targetCase]">
                     <a :href="lists[currentIndex].unit[targetCase].to" class="stretched-link"></a>
-                  </div>
+                  </div> -->
+                  <template v-if="item.to.startsWith('http')">
+                    <a :href="item.to" target="_blank" class="stretched-link"></a>
+                  </template>
+                  <template v-else>
+                    <router-link :to="item.to" class="stretched-link"></router-link>
+                  </template>
                 </div>
               </slide>
             </carousel-3d>
@@ -257,9 +280,6 @@ export default {
 </template>
 
 <style>
-html{
-  background-color: red;
-}
 /* ↓↓↓Header↓↓↓ */
 .nav-masthead .nav-link {
   padding: .25rem 0;
