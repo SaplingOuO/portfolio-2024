@@ -61,10 +61,10 @@ export default {
               name: 'AnimeList',
               to:'https://saplingouo.github.io/AnimeRecord/',
             },
-            // {
-            //   name: 'InProduction',
-            //   to:'/Project/InProduction',
-            // },
+            {
+              name: 'AnimeRecord-vite-vue3',
+              to:'https://saplingouo.github.io/AnimeRecord-vite-vue3/',
+            },
             {
               name: 'PokemonTypeFighting',
               to:'/Project/PokemonTypeFighting',
