@@ -148,9 +148,12 @@ export default {
       this.targetCase = temp;
       // 自動導航至目標頁面
       const targetUnit = this.lists[this.currentIndex]?.unit?.[temp];
+      const abc = this.lists[this.currentIndex]?.name;
 
       if (targetUnit && !targetUnit.to.startsWith('http')) {
         this.$router.push(targetUnit.to);
+      }else{
+        this.$router.push(abc);
       }
     },
     goSlideIndex(index) {

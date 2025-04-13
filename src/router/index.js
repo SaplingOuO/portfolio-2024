@@ -53,11 +53,11 @@ const routes = [
     {
         path: '/Project',
         children:[
-            // {
-            //     path: '/Project/AnimeList',
-            //     name: 'AnimeList',
-            //     component: () => import('../views/Project/AnimeList.vue')
-            // },
+            {
+                path: '/Project/AnimeList',
+                name: 'AnimeList',
+                // component: () => import('../views/Project/AnimeList.vue')
+            },
             // {
             //     path: '/Project/InProduction',
             //     name: 'InProduction',
