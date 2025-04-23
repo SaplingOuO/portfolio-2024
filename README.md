@@ -11,12 +11,10 @@
   - CSS3
   - JavaScript
   - Python
-  - THREE.js
 
 - 框架
   - Bootstrap 5
   - Vue 2
-  - Vue 3
 
 
 ### [點此進入網站](https://saplingouo.github.io/MyPortfolio/)
