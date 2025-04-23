@@ -15,8 +15,8 @@
 
 - 框架
   - Bootstrap 5
+  - Vue 2
   - Vue 3
 
-- 資料庫
 
 ### [點此進入網站](https://saplingouo.github.io/MyPortfolio/)
