@@ -18,6 +18,11 @@ const routes = [
                 name: 'HtmlTag',
                 component: () => import('../views/Layout/HtmlTag.vue')
             },
+            {
+                path: '/Layout/GSAP_ex',
+                name: 'GSAP_ex',
+                component: () => import('../views/Layout/GSAP_ex.vue')
+            },
         ],
     },
     {

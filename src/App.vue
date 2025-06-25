@@ -23,6 +23,10 @@ export default {
               name: 'HTML標籤',
               to: '/Layout/HtmlTag'
             },
+            {
+              name: 'GSAP測試',
+              to: '/Layout/GSAP_ex'
+            },
           ],
         },
         {
