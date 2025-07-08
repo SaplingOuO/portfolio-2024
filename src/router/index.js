@@ -19,9 +19,9 @@ const routes = [
                 component: () => import('../views/Layout/HtmlTag.vue')
             },
             {
-                path: '/Layout/GSAP_ex',
-                name: 'GSAP_ex',
-                component: () => import('../views/Layout/GSAP_ex.vue')
+                path: '/Layout/GSAP/ShapeChange',
+                name: 'ShapeChange',
+                component: () => import('../views/Layout/GSAP/ShapeChange.vue')
             },
         ],
     },
@@ -52,6 +52,11 @@ const routes = [
                 path: '/Components/ThreeJS/ThreeInteractive',
                 name: 'ThreeInteractive',
                 component: () => import('../views/Components/ThreeJS/ThreeInteractive.vue')
+            },
+            {
+                path: '/Components/GSAP_ex',
+                name: 'GSAP_ex',
+                component: () => import('../views/Components/GSAP_ex.vue')
             },
         ],
     },

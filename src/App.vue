@@ -20,12 +20,14 @@ export default {
           name: 'Layout',
           unit:[
             {
-              name: 'HTML標籤',
-              to: '/Layout/HtmlTag'
+              name: 'HTML標籤範例',
+              to: '/Layout/HtmlTag',
+              img: '../coverImages/HtmlTag.gif',
             },
             {
-              name: 'GSAP測試',
-              to: '/Layout/GSAP_ex'
+              name: 'GSAP形狀變換',
+              to: '/Layout/GSAP/ShapeChange',
+              img: '../coverImages/HtmlTag.gif',
             },
           ],
         },
@@ -33,24 +35,34 @@ export default {
           name: 'Components',
           unit:[
             {
-              name: '動態文字',
-              to: '/Components/animatedText'
+              name: '動態文字特效',
+              to: '/Components/animatedText',
+              img: '../coverImages/animatedText.gif',
             },
             {
-              name: '動態更換背景色',
+              name: '背景顏色變化效果',
               to:'/Components/BackgroundColorChange',
+              img: '../coverImages/HtmlTag.gif',
             },
             {
-              name: 'carousel-3d測試',
+              name: '3D Carousel 選單',
               to:'/Components/HomeViewSlide',
+              img: '../coverImages/HtmlTag.gif',
             },
             {
-              name: 'ThreeExample',
+              name: '	Three.js 基礎範例',
               to:'/Components/ThreeJS/ThreeExample',
+              img: '../coverImages/HtmlTag.gif',
             },
             {
-              name: 'ThreeInteractive',
+              name: 'Three.js 互動範例',
               to:'/Components/ThreeJS/ThreeInteractive',
+              img: '../coverImages/HtmlTag.gif',
+            },
+            {
+              name: 'GSAP測試',
+              to: '/Components/GSAP_ex',
+              img: '../coverImages/HtmlTag.gif',
             },
           ],
         },
@@ -58,20 +70,24 @@ export default {
           name: 'Project',
           unit:[
             {
-              name: 'ShopDemo',
+              name: '簡易購物車範例',
               to:'/Project/ShopDemo',
+              img: '../coverImages/HtmlTag.gif',
             },
             {
-              name: 'AnimeList',
+              name: 'Anime Record (舊版)',
               to:'https://saplingouo.github.io/AnimeRecord/',
+              img: '../coverImages/HtmlTag.gif',
             },
             {
-              name: 'AnimeRecord-vite-vue3',
+              name: 'Anime Record (Vue3 + Vite)',
               to:'https://saplingouo.github.io/AnimeRecord-vite-vue3/',
+              img: '../coverImages/HtmlTag.gif',
             },
             {
-              name: 'PokemonTypeFighting',
+              name: '寶可夢屬性相剋模擬',
               to:'/Project/PokemonTypeFighting',
+              img: '../coverImages/HtmlTag.gif',
             },
           ],
         },
@@ -254,7 +270,7 @@ export default {
               <slide class="border-0 rounded" v-for="(item, i) in lists[this.currentIndex].unit" :index="i" :key="i">
                 <div class="card">
                   <div class="img-fluid" style="height: 300px;">
-                    <img class="card-img-top" src="http://fakeimg.pl/300x300"
+                    <img class="card-img-top" :src="item.img"
                       style="object-fit: cover; width: 100%; height: 100%">
                   </div>
                   <div class="position-absolute bottom-0 start-0 w-100 badge bg-dark" style="--bs-bg-opacity: 0.4">

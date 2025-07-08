@@ -116,7 +116,7 @@ export default {
       :clickable=clickable :controlsVisible=controlsVisible>
       <slide class="border-0 rounded" v-for="i in count" :index="i - 1" :key="i - 1">
         <div class="card">
-          <img :src="'http://fakeimg.pl/' + height + 'x' + width" style="object-fit: cover; width: 100%; height: 100%">
+          <img :src="'https://picsum.photos/' + height + '/' + width" style="object-fit: cover; width: 100%; height: 100%">
           <div :class="bootstapStyle" style="--bs-bg-opacity: 0.4">
             <h5 class="title text-truncate">{{ i }}</h5>
           </div>
