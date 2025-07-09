@@ -23,6 +23,11 @@ const routes = [
                 name: 'ShapeChange',
                 component: () => import('../views/Layout/GSAP/ShapeChange.vue')
             },
+            {
+                path: '/Layout/GSAP/PokerShuffling',
+                name: 'Poker',
+                component: () => import('../views/Layout/GSAP/PokerShuffling.vue')
+            },
         ],
     },
     {

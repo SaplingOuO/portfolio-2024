@@ -29,6 +29,11 @@ export default {
               to: '/Layout/GSAP/ShapeChange',
               img: '../coverImages/HtmlTag.gif',
             },
+            {
+              name: 'GSAP撲克隨機換牌',
+              to: '/Layout/GSAP/PokerShuffling',
+              img: '../coverImages/HtmlTag.gif',
+            },
           ],
         },
         {
