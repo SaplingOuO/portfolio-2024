@@ -1,5 +1,6 @@
 <script setup>
-import { reactive, computed } from 'vue'
+import { reactive, computed, ref } from 'vue'
+import { gsap } from 'gsap'
 
 // 撲克牌數字（共 13 張）
 const numbers = ['A','2','3','4','5','6','7','8','9','10','J','Q','K']
@@ -15,6 +16,10 @@ const flowerPath = {
   club: 'M98.5 17.411 C98.502 28.298 94.682 38.839 87.705 47.196 C80.729 55.553 71.039 61.195 60.328 63.137 C49.616 65.079 38.563 63.198 29.096 57.822 C19.63 52.446 12.352 43.917 8.533 33.723 C8.497 64.295 10.459 84.636 39.469 100 H-39.5157 C-10.5052 84.641 -8.5436 64.304 -8.5791 33.723 C-11.771 42.223 -17.3842 49.6 -24.7246 54.944 C-32.065 60.287 -40.8106 63.362 -49.88 63.788 C-58.9493 64.213 -67.9445 61.971 -75.7531 57.339 C-83.5617 52.706 -89.8413 45.887 -93.8152 37.723 C-97.7891 29.56 -99.283 20.411 -98.1122 11.407 C-96.9414 2.403 -93.1573 -6.0596 -87.2278 -12.9353 C-81.2983 -19.811 -73.4834 -24.7978 -64.7498 -27.2792 C-56.0161 -29.7605 -46.7467 -29.6274 -38.0879 -26.8965 C-42.9615 -33.8592 -45.8319 -42.0253 -46.3868 -50.5061 C-46.9416 -58.9869 -45.1596 -67.4574 -41.2346 -74.9957 C-37.3097 -82.534 -31.3922 -88.8513 -24.1263 -93.2601 C-16.8603 -97.6688 -8.5243 -100 0 -100 C8.473 -100 16.809 -97.6688 24.075 -93.2601 C31.341 -88.8513 37.2586 -82.534 41.1835 -74.9957 C45.1085 -67.4574 46.8906 -58.9869 46.3357 -50.5061 C45.7809 -42.0253 42.9105 -33.8592 38.0369 -26.8965 C44.9985 -29.0919 52.379 -29.617 59.581 -28.4292 C66.784 -27.2413 73.605 -24.374 79.493 -20.0593 C85.38 -15.7446 90.169 -10.104 93.472 -3.5941 C96.774 2.916 98.496 10.112 98.5 17.411 Z'
 }
 
+const cardRef = ref(null)
+const cardRefBack = ref(null)
+const isBack = ref(false)
+
 // 目前的卡片狀態（數字與花色索引）
 const current = reactive({
   numberIndex: 0,   // 對應 numbers[] 的索引
@@ -27,71 +32,94 @@ const currentSuitColor = computed(() => {
   return (suit === 'heart' || suit === 'diamond') ? '#c00' : '#000'
 })
 
+// 翻轉動畫
+function flipCard(onHalfFlip) {
+  gsap.to(cardRef.value, {
+    duration: 0.3,
+    rotationY: 90,
+    ease: "power1.in",
+    onComplete: () => {
+      onHalfFlip?.()  // 更新數字與花色
+      isBack.value = true  // 顯示背面
+
+      // 馬上將背面的角度從 90 度 → 90 度（確保開始正確）
+      gsap.set(cardRefBack.value, { rotationY: 90 })
+
+      isBack.value = false  // 顯示背面
+      // 再從 90 → 0 度翻回來
+      gsap.to(cardRefBack.value, {
+        duration: 0.3,
+        rotationY: 0,
+        ease: "power1.out"
+      })
+    }
+  })
+}
+
 // 切換到下一張卡片（數字 + 花色都循環）
 function nextCard() {
-  current.numberIndex = (current.numberIndex + 1) % numbers.length
-  current.suitIndex = (current.suitIndex + 1) % suits.length
+  flipCard(()=> {
+    current.numberIndex = (current.numberIndex + 1) % numbers.length
+    current.suitIndex = (current.suitIndex + 1) % suits.length
+  })
 }
 // 切換到下一張卡片（數字 + 花色都隨機）
 function randomCard() {
+  flipCard(()=> {
   current.numberIndex = Math.floor(Math.random() * numbers.length)
   current.suitIndex = Math.floor(Math.random() * suits.length)
+  })
 }
+
+// 洗牌動畫
+function shuffleCard() {
+  const duration = 1 // 持續 1 秒
+  const interval = 0.1 // 每 0.1 秒換一次
+  const steps = duration / interval
+
+  const tl = gsap.timeline({
+    repeat: steps - 1,
+    onRepeat: () => {
+      current.numberIndex = Math.floor(Math.random() * numbers.length)
+      current.suitIndex = Math.floor(Math.random() * suits.length)
+    },
+    onComplete: () => {
+      // 結束時選一張固定牌
+      current.numberIndex = Math.floor(Math.random() * numbers.length)
+      current.suitIndex = Math.floor(Math.random() * suits.length)
+    }
+  })
+
+  tl.to({}, { duration: interval }) // 每次動畫間隔
+}
+
 </script>
 
 <template>
   <div class="row">
     <div class="col">
-      <div class="card-container">
-        <!-- 可縮放的撲克牌 SVG，點擊切換牌面 -->
-        <svg 
-          viewBox="0 0 635 889"
-          preserveAspectRatio="xMidYMid meet"
-          @click="nextCard"
-        >
-          <!-- 撲克牌白底外框 -->
-          <rect
-            x="0"
-            y="0"
-            width="635"
-            height="889"
-            rx="30"
-            ry="30"
-            fill="#fff"
-            stroke="#000"
-            stroke-width="10"
-          />
-
-          <!-- 左上角數字 -->
-          <text 
-            class="no-select"
-            x="65" 
-            y="80" 
-            text-anchor="middle"
-            dominant-baseline="middle" 
-            font-size="80" 
-            :fill="currentSuitColor"
+      <div class="card-stage">
+        <div ref="cardRef" class="card-face" v-show="!isBack">
+          <!-- 可縮放的撲克牌 SVG，點擊切換牌面 -->
+          <svg 
+            viewBox="0 0 635 889"
+            preserveAspectRatio="xMidYMid meet"
+            @click="nextCard"
           >
-            {{ numbers[current.numberIndex] }}
-          </text>
+            <!-- 撲克牌白底外框 -->
+            <rect
+              x="0"
+              y="0"
+              width="635"
+              height="889"
+              rx="30"
+              ry="30"
+              fill="#fff"
+              stroke="#000"
+              stroke-width="10"
+            />
 
-          <!-- 左上角小花色圖示 -->
-          <path
-            :d="flowerPath[suits[current.suitIndex]]"
-            transform="translate(65,150) scale(0.3)"
-            :fill="currentSuitColor"
-          />
-
-          <!-- 正中央的大花色圖示 -->
-          <path
-            :d="flowerPath[suits[current.suitIndex]]"
-            transform="translate(317.5, 444.5) scale(1.0)"
-            :fill="currentSuitColor"
-          />
-
-          <!-- 右下角（翻轉）數字 + 花色 -->
-          <g transform="rotate(180, 317.5, 444.5)">
-            <!-- 右下角數字 -->
+            <!-- 左上角數字 -->
             <text 
               class="no-select"
               x="65" 
@@ -103,28 +131,91 @@ function randomCard() {
             >
               {{ numbers[current.numberIndex] }}
             </text>
-            <!-- 右下角小花色圖示 -->
+
+            <!-- 左上角小花色圖示 -->
             <path
               :d="flowerPath[suits[current.suitIndex]]"
               transform="translate(65,150) scale(0.3)"
               :fill="currentSuitColor"
             />
-          </g>
-        </svg>
+
+            <!-- 正中央的大花色圖示 -->
+            <path
+              :d="flowerPath[suits[current.suitIndex]]"
+              transform="translate(317.5, 444.5) scale(1.0)"
+              :fill="currentSuitColor"
+            />
+
+            <!-- 右下角（翻轉）數字 + 花色 -->
+            <g transform="rotate(180, 317.5, 444.5)">
+              <!-- 右下角數字 -->
+              <text 
+                class="no-select"
+                x="65" 
+                y="80" 
+                text-anchor="middle"
+                dominant-baseline="middle" 
+                font-size="80" 
+                :fill="currentSuitColor"
+              >
+                {{ numbers[current.numberIndex] }}
+              </text>
+              <!-- 右下角小花色圖示 -->
+              <path
+                :d="flowerPath[suits[current.suitIndex]]"
+                transform="translate(65,150) scale(0.3)"
+                :fill="currentSuitColor"
+              />
+            </g>
+          </svg>
+        </div>
+        <div ref="cardRefBack" class="card-face" v-show="isBack">
+          <svg 
+            viewBox="0 0 635 889"
+            preserveAspectRatio="xMidYMid meet"
+          >
+            <!-- 撲克牌白底外框 -->
+            <rect
+              x="0"
+              y="0"
+              width="635"
+              height="889"
+              rx="30"
+              ry="30"
+              fill="#fff"
+              stroke="#000"
+              stroke-width="10"
+            />
+          </svg>
+        </div>
       </div>
     </div>
     <div class="col">
       <button class="btn" @click="randomCard">隨機撲克牌</button>
+      <button class="btn" @click="shuffleCard">洗牌</button>
     </div>
   </div>
 </template>
 
 <style>
-.card-container {
-  width: 30vw;        /* 根據視窗寬度縮放卡片寬度 */
-  max-width: 300px;   /* 最大寬度限制為 300px */
-  margin: 0 auto;     /* 置中顯示 */
+.card-stage {
+  position: relative;
+  width: 30vw;
+  max-width: 300px;
+  aspect-ratio: 635 / 889;
+  margin: 0 auto;
+  perspective: 1000px;
 }
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+}
+
 svg {
   width: 100%;        /* SVG 寬度佔滿容器 */
   height: auto;       /* 高度自動等比例縮放 */
