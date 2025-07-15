@@ -41,17 +41,37 @@ function flipCard(onHalfFlip) {
     onComplete: () => {
       onHalfFlip?.()  // 更新數字與花色
       isBack.value = true  // 顯示背面
-
-      // 馬上將背面的角度從 90 度 → 90 度（確保開始正確）
-      gsap.set(cardRefBack.value, { rotationY: 90 })
-
-      isBack.value = false  // 顯示背面
-      // 再從 90 → 0 度翻回來
       gsap.to(cardRefBack.value, {
         duration: 0.3,
         rotationY: 0,
-        ease: "power1.out"
+        ease: "power1.out",
+        onComplete: () => {
+          gsap.to(cardRefBack.value, {
+            duration: 0.3,
+            rotationY: 90,
+            ease: "power1.in",
+            onComplete: () => {
+              isBack.value = false  // 顯示背面
+              gsap.to(cardRef.value, {
+                duration: 0.3,
+                rotationY: 0,
+                ease: "power1.out"
+              })
+            }
+          })
+          
+        }
       })
+      // 馬上將背面的角度從 90 度 → 90 度（確保開始正確）
+      // gsap.set(cardRefBack.value, { rotationY: 90 })
+
+      // isBack.value = false  // 顯示背面
+      // 再從 90 → 0 度翻回來
+      // gsap.to(cardRef.value, {
+      //   duration: 0.3,
+      //   rotationY: 0,
+      //   ease: "power1.out"
+      // })
     }
   })
 }
@@ -185,6 +205,13 @@ function shuffleCard() {
               fill="#fff"
               stroke="#000"
               stroke-width="10"
+            />
+            <image
+              href="https://picsum.photos/635/889"
+              x="0"
+              y="0"
+              width="635"
+              height="889"
             />
           </svg>
         </div>
