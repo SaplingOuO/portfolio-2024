@@ -8,6 +8,6 @@ cd dist
 git init 
 git add -A
 git commit -m 'deploy'
-# 部署到 https://github.com/SaplingOuO/MyPortfolio.git 分支為 gh-pages
-git push -f https://github.com/SaplingOuO/MyPortfolio.git master:gh-pages
+# 部署到 https://github.com/SaplingOuO/portfolio-2024.git 分支為 gh-pages
+git push -f https://github.com/SaplingOuO/portfolio-2024.git master:gh-pages
 cd -
