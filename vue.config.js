@@ -5,7 +5,7 @@
 
 module.exports = ({
   publicPath: process.env.NODE_ENV === 'production'
-  ? '/MyPortfolio'
+  ? '/portfolio-2024'
   : '/',
   // publicPath: './',
   // outputDir:'./dist',
